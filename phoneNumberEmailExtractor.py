@@ -1,7 +1,12 @@
 import re
 import pyperclip
 
-textToSearch = pyperclip.waitForPaste()
+textToSearch = str(pyperclip.waitForPaste())
+
+print("Copied text:")
+print(textToSearch)
+print("=========")
+
 
 telephoneRegex = re.compile(r"""
 (00353|\+353)?   # optionally match country code in either format
@@ -16,15 +21,35 @@ emailRegex = re.compile(r'''
 (@)
 (\w*)
 (\.[a-zA-Z]{2,4})
-(\.[a-zA-Z]{2,4})
+(\.[a-zA-Z]{2,4})?
 ''', re.VERBOSE)
 
+# (\.[a-zA-Z]{2,4})
+emailResult = emailRegex.findall(textToSearch)
+phoneNumberResult = telephoneRegex.findall(textToSearch)
+
+stringAnswer = ""
 
 
-if emailTest:
-    print(emailTest.group(1))
-else:
-    print("no email, dickhead")
+
+for email in emailResult:
+    tempEmail = ""
+    for item in email:
+        tempEmail += item
+    stringAnswer += tempEmail
+    stringAnswer += "\n"
+
+for phone in phoneNumberResult:
+    tempPhone = ""
+    for item in phone:
+        tempPhone += item
+    stringAnswer += tempPhone
+    stringAnswer += "\n"
+
+
+
+pyperclip.copy(stringAnswer)
+
 
 
 
